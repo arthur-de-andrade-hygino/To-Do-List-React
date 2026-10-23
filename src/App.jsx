@@ -34,6 +34,15 @@ function App() {
     
   }
 
+function DeleteTask(id){
+
+  const newList = list.filter(item => item.id !== id)
+
+  setList(newList)
+
+
+}
+
 
 
   return (
@@ -53,7 +62,7 @@ function App() {
               <ListItens key={item.id} $isFinished= { item.finished }>
                 <FaRocket onClick={ ()=> finalizeTask(item.id)} />
                 <li> {item.task} </li> 
-                <FaTrash />
+                <FaTrash onClick={ ()=> DeleteTask(item.id)} />
               </ListItens>
             )
             )
