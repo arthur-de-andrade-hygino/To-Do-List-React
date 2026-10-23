@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Wrapper, DivItens, Input, Button, ListItens } from './styles.js'
-import { FaTrash, FaRocket } from "react-icons/fa";
+import { Wrapper, DivItens, Input, Button, ListItens, Trash, Rocket, NoItems } from './styles.js'
+
+
 
 function App() {
 
-  const [list, setList] = useState([{ id: uuidv4(), task: "Estudar programação", finished: true}])
+  const [list, setList] = useState([])
   const [inputTask, setinputTask] = useState('')
+
 
 
 
@@ -20,10 +22,30 @@ function App() {
 
 
   function buttonClicado() {
+    
 
-    setList([...list, { id: uuidv4(), task: inputTask, finished: false}])
+    if (inputTask) {
+       
+      setList([...list, { id: uuidv4(), task: inputTask, finished: false}])
+
+    }
+    else{
+
+      // alert('Escreva uma tarefa no campo abaixo')
+      
+    }
+
+   limparInput()
 
   }
+
+  function limparInput(){
+
+    setinputTask('')
+
+
+  }
+
 
 
   function finalizeTask(id){
@@ -43,7 +65,16 @@ function DeleteTask(id){
 
 }
 
+function enterClicked(e){
 
+if(e.key === 'Enter'){
+
+buttonClicado()
+
+}
+
+
+}
 
   return (
 
@@ -51,21 +82,24 @@ function DeleteTask(id){
 
       <DivItens>
 
-        <Input onChange={inputMudou} placeholder="O que tenho que fazer..." />
+        <Input onKeyDown={enterClicked} value={inputTask} onChange={inputMudou} placeholder="O que tenho que fazer..." />
         <Button onClick={buttonClicado}>Adicionar</Button>
 
         <ul>
 
           {
 
+            list.length > 0 ? (
+
             list.map(item => (
               <ListItens key={item.id} $isFinished= { item.finished }>
-                <FaRocket onClick={ ()=> finalizeTask(item.id)} />
+                <Rocket onClick={ ()=> finalizeTask(item.id)} />
                 <li> {item.task} </li> 
-                <FaTrash onClick={ ()=> DeleteTask(item.id)} />
+                <Trash onClick={ ()=> DeleteTask(item.id)} />
               </ListItens>
             )
             )
+            ) : ( <NoItems> Não há tarefas ainda . . . </NoItems> )
 
           }
 
